@@ -15,18 +15,71 @@ export default function Page() {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setError(error.message);
-    } else {
-      alert("Login successful 🚀");
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
+    // Check user role and route accordingly
+    const checkUserRole = async (userId: string) => {
+      console.log("Checking role for user ID:", userId);
+      const { data, error } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        console.log("User not found in users table, creating super admin record...");
+        // Need to get user data again for email
+        const { data: userData } = await supabase.auth.getUser();
+        
+        // Create super admin record if it doesn't exist
+        const { error: insertError } = await supabase.from("users").insert({
+          id: userId,
+          email: userData?.user?.email || 'super@admin.com',
+          role: "super_admin",
+          organization_id: null
+        });
+        
+        if (insertError) {
+          console.error("Error creating super admin record:", insertError);
+          return null;
+        }
+        
+        console.log("Created super admin record successfully");
+        return "super_admin";
+      }
+
+      if (error) {
+        console.error("Error checking user role:", error);
+        return null;
+      }
+
+      console.log("Found user role:", data?.role);
+      return data?.role;
+    };
+
+    console.log("Login successful, checking role for user:", data.user.id);
+    const role = await checkUserRole(data.user.id);
+
+    if (role === "super_admin") {
+      console.log("Redirecting super admin to /dashboard");
+      window.location.href = "/dashboard";
+    } else if (role === "org_admin") {
+      console.log("Redirecting org admin to /org-dashboard");
+      window.location.href = "/org-dashboard";
+    } else {
+      console.log("No valid role found, role:", role);
+      alert("Unauthorized: No valid role found");
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
