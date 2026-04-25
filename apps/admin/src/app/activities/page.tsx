@@ -2,17 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface Activity {
   id: string;
   project_id: string;
-  zone_id: string;
   name: string;
   planned_start: string;
   planned_end: string;
-  duration_days: number;
-  status: string;
+  zone_id: string;
   created_at: string;
+  updated_at: string;
+  latest_progress?: ProgressUpdate | null;
 }
 
 interface Zone {
@@ -36,6 +37,9 @@ interface ProgressUpdate {
   date: string;
   progress_percent: number;
   remarks: string;
+  updated_by: string;
+  location: string;
+  image_url?: string;
   created_at: string;
 }
 
@@ -53,15 +57,479 @@ interface ProgressFormData {
 }
 
 export default function ActivitiesPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
   const [activities, setActivities] = useState<ActivityWithProgress[]>([]);
   const [zones, setZones] = useState<Zone[]>([]);
-  const [selectedZone, setSelectedZone] = useState<string>("");
+  const [selectedZone, setSelectedZone] = useState<string>("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
   const [showActivityForm, setShowActivityForm] = useState(false);
   const [showProgressForm, setShowProgressForm] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState<string>("");
-  const [loading, setLoading] = useState(true);
+  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [dark, setDark] = useState(false);
+
+  // Set dynamic page title
+  useEffect(() => {
+    document.title = "Activities | RTP";
+  }, [searchParams]); // Include searchParams to handle URL changes
+
+  // State persistence utilities
+  const updateURLParams = useCallback((params: Record<string, string>) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+    const url = `${newParams.toString() ? '?' + newParams.toString() : ''}`;
+    router.push(url, { scroll: false });
+  }, [searchParams, router]);
+
+  const saveToLocalStorage = useCallback((key: string, value: any) => {
+    try {
+      localStorage.setItem(`activities_${key}`, JSON.stringify(value));
+    } catch (error) {
+      console.warn('Failed to save to localStorage:', error);
+    }
+  }, []);
+
+  const loadFromLocalStorage = useCallback((key: string, defaultValue: any = null) => {
+    try {
+      const item = localStorage.getItem(`activities_${key}`);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+      console.warn('Failed to load from localStorage:', error);
+      return defaultValue;
+    }
+  }, []);
+
+  // Initialize state from URL params and localStorage
+  useEffect(() => {
+    // Restore selectedZone from URL params first, then localStorage
+    const zoneFromURL = searchParams.get('zone');
+    const zoneFromStorage = loadFromLocalStorage('selectedZone', '');
+    setSelectedZone(zoneFromURL || zoneFromStorage);
+
+    // Restore modal states from localStorage
+    const activityFormOpen = loadFromLocalStorage('showActivityForm', false);
+    const progressFormOpen = loadFromLocalStorage('showProgressForm', false);
+    const activityId = loadFromLocalStorage('selectedActivity', '');
+
+    setShowActivityForm(activityFormOpen);
+    setShowProgressForm(progressFormOpen);
+    setSelectedActivity(activityId);
+
+    // Restore dark mode
+    const darkMode = loadFromLocalStorage('darkMode', false);
+    setDark(darkMode);
+  }, [searchParams]); // Run when searchParams change
+
+  // Save state changes to URL params and localStorage
+  useEffect(() => {
+    if (selectedZone) {
+      updateURLParams({ zone: selectedZone });
+      saveToLocalStorage('selectedZone', selectedZone);
+    }
+  }, [selectedZone]);
+
+  useEffect(() => {
+    saveToLocalStorage('showActivityForm', showActivityForm);
+    if (!showActivityForm) {
+      // Clear selected activity when closing activity form
+      saveToLocalStorage('selectedActivity', '');
+    }
+  }, [showActivityForm]);
+
+  useEffect(() => {
+    saveToLocalStorage('showProgressForm', showProgressForm);
+    if (!showProgressForm) {
+      // Clear selected activity when closing progress form
+      saveToLocalStorage('selectedActivity', '');
+    }
+  }, [showProgressForm]);
+
+  useEffect(() => {
+    saveToLocalStorage('selectedActivity', selectedActivity);
+  }, [selectedActivity]);
+
+  useEffect(() => {
+    saveToLocalStorage('darkMode', dark);
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [dark]);
+
+  // Show toast message
+  const showToast = (message: string) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  // Skeleton loading component
+  const SkeletonCard = () => (
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 animate-pulse">
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+          <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-32"></div>
+        </div>
+        <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+      </div>
+      <div className="space-y-3">
+        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+      </div>
+      <div className="mt-4 flex space-x-3">
+        <div className="h-10 bg-gray-300 dark:bg-gray-600 rounded flex-1"></div>
+        <div className="h-10 bg-gray-300 dark:bg-gray-600 rounded flex-1"></div>
+      </div>
+    </div>
+  );
+
+  // Check if an activity is delayed
+  const isActivityDelayed = (activity: Activity) => {
+    const plannedEnd = new Date(activity.planned_end);
+    const progress = activity.latest_progress?.progress_percent || 0;
+    return progress < 100 && new Date() > plannedEnd;
+  };
+
+  // Sort activities: Delayed → In Progress → Not Started
+  const sortActivities = (activities: Activity[]) => {
+    return activities.sort((a, b) => {
+      const aDelayed = isActivityDelayed(a);
+      const bDelayed = isActivityDelayed(b);
+      
+      // Delayed activities first
+      if (aDelayed && !bDelayed) return -1;
+      if (!aDelayed && bDelayed) return 1;
+      
+      // If both delayed, sort by delay severity (days overdue)
+      if (aDelayed && bDelayed) {
+        const aDaysOverdue = Math.floor((new Date().getTime() - new Date(a.planned_end).getTime()) / (1000 * 60 * 60 * 24));
+        const bDaysOverdue = Math.floor((new Date().getTime() - new Date(b.planned_end).getTime()) / (1000 * 60 * 60 * 24));
+        return bDaysOverdue - aDaysOverdue;
+      }
+      
+      // Then by progress (in progress before not started)
+      const aProgress = a.latest_progress?.progress_percent || 0;
+      const bProgress = b.latest_progress?.progress_percent || 0;
+      return bProgress - aProgress;
+    });
+  };
+
+  // Chart data calculation functions
+  const getPieChartData = () => {
+    const notStarted = activities.filter(a => !a.latest_progress || a.latest_progress.progress_percent === 0).length;
+    const inProgress = activities.filter(a => a.latest_progress && a.latest_progress.progress_percent > 0 && a.latest_progress.progress_percent < 100).length;
+    const completed = activities.filter(a => a.latest_progress && a.latest_progress.progress_percent === 100).length;
+
+    return [
+      { label: 'Not Started', value: notStarted, color: '#ef4444' },
+      { label: 'In Progress', value: inProgress, color: '#f59e0b' },
+      { label: 'Completed', value: completed, color: '#10b981' }
+    ];
+  };
+
+  const getBarChartData = () => {
+    return activities
+      .map(activity => ({
+        name: activity.name,
+        progress: activity.latest_progress?.progress_percent || 0
+      }))
+      .sort((a, b) => b.progress - a.progress)
+      .slice(0, 10);
+  };
+
+  const getStatistics = () => {
+    const today = new Date();
+    const delayedActivities = activities.filter(activity => {
+      const plannedEnd = new Date(activity.planned_end);
+      const progress = activity.latest_progress?.progress_percent || 0;
+      
+      // Mark as delayed if progress < 100 AND today > planned_end
+      return progress < 100 && today > plannedEnd;
+    }).length;
+
+    const totalActivities = activities.length;
+    const completedActivities = activities.filter(a => a.latest_progress?.progress_percent === 100).length;
+    const inProgressActivities = activities.filter(a => a.latest_progress && a.latest_progress.progress_percent > 0 && a.latest_progress.progress_percent < 100).length;
+    const notStartedActivities = activities.filter(a => !a.latest_progress || a.latest_progress.progress_percent === 0).length;
+    
+    // Calculate health score
+    let healthScore = 0;
+    if (totalActivities > 0) {
+      healthScore = 
+        (completedActivities / totalActivities * 60) +
+        (inProgressActivities / totalActivities * 30) -
+        (delayedActivities / totalActivities * 40);
+      
+      // Clamp between 0 and 100
+      healthScore = Math.max(0, Math.min(100, healthScore));
+      healthScore = Math.round(healthScore);
+    }
+    
+    // Determine status message
+    let statusMessage = '';
+    if (delayedActivities / totalActivities > 0.3) {
+      statusMessage = 'Project at risk due to delays';
+    } else if (completedActivities / totalActivities > 0.6) {
+      statusMessage = 'Project on track';
+    } else if (notStartedActivities / totalActivities > 0.5) {
+      statusMessage = 'Execution yet to begin';
+    } else {
+      statusMessage = 'Project progressing';
+    }
+    
+    // Determine color
+    let scoreColor = '';
+    if (healthScore >= 75) {
+      scoreColor = 'text-green-600 dark:text-green-400';
+    } else if (healthScore >= 50) {
+      scoreColor = 'text-orange-600 dark:text-orange-400';
+    } else {
+      scoreColor = 'text-red-600 dark:text-red-400';
+    }
+
+    const averageProgress = activities.length > 0 
+      ? Math.round(activities.reduce((sum, activity) => sum + (activity.latest_progress?.progress_percent || 0), 0) / activities.length)
+      : 0;
+
+    return {
+      totalActivities,
+      onTimeActivities: totalActivities - delayedActivities,
+      delayedActivities,
+      averageProgress,
+      healthScore,
+      scoreColor,
+      statusMessage,
+      completedActivities,
+      inProgressActivities,
+      notStartedActivities
+    };
+  };
+
+  // Chart rendering functions
+  const renderPieChart = () => {
+    const data = getPieChartData();
+    const total = data.reduce((sum, item) => sum + item.value, 0);
+    
+    if (total === 0) {
+      return (
+        <div className="flex items-center justify-center h-48 text-gray-500 dark:text-gray-400">
+          No data available
+        </div>
+      );
+    }
+
+    const centerX = 100;
+    const centerY = 100;
+    const radius = 80;
+    let currentAngle = -90; // Start from top
+
+    const paths = data.map((item) => {
+      if (item.value === 0) return null;
+      
+      const percentage = (item.value / total) * 100;
+      const angle = (percentage / 100) * 360;
+      const endAngle = currentAngle + angle;
+      
+      const x1 = centerX + radius * Math.cos((currentAngle * Math.PI) / 180);
+      const y1 = centerY + radius * Math.sin((currentAngle * Math.PI) / 180);
+      const x2 = centerX + radius * Math.cos((endAngle * Math.PI) / 180);
+      const y2 = centerY + radius * Math.sin((endAngle * Math.PI) / 180);
+      
+      const largeArcFlag = angle > 180 ? 1 : 0;
+      
+      const pathData = [
+        `M ${centerX} ${centerY}`,
+        `L ${x1} ${y1}`,
+        `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+        'Z'
+      ].join(' ');
+      
+      currentAngle = endAngle;
+      
+      return (
+        <path
+          key={item.label}
+          d={pathData}
+          fill={item.color}
+          stroke="white"
+          strokeWidth="2"
+        />
+      );
+    });
+
+    return (
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        {paths}
+      </svg>
+    );
+  };
+
+  const renderBarChart = () => {
+    const data = getBarChartData();
+    
+    if (data.length === 0) {
+      return (
+        <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+          No data available
+        </div>
+      );
+    }
+
+    // Function to shorten activity names
+    const shortenName = (name: string) => {
+      if (name.length <= 8) return name;
+      
+      // Common abbreviations
+      const abbreviations: { [key: string]: string } = {
+        'Foundation': 'Found.',
+        'Installation': 'Install.',
+        'Construction': 'Constr.',
+        'Excavation': 'Excav.',
+        'Electrical': 'Elec.',
+        'Plumbing': 'Plumb.',
+        'Security': 'Sec.',
+        'Landscaping': 'Land.',
+        'Parking': 'Park.',
+        'Systems': 'Sys.',
+        'Equipment': 'Equip.',
+        'Building': 'Bldg.',
+        'Structure': 'Struct.',
+        'Maintenance': 'Maint.',
+        'Inspection': 'Insp.',
+        'Testing': 'Test.',
+        'Commissioning': 'Comm.',
+        'Renovation': 'Renov.',
+        'Demolition': 'Demol.'
+      };
+      
+      // Try to replace with abbreviation
+      for (const [full, short] of Object.entries(abbreviations)) {
+        if (name.includes(full)) {
+          return name.replace(full, short).substring(0, 10);
+        }
+      }
+      
+      // If no abbreviation found, just truncate
+      return name.substring(0, 8) + '..';
+    };
+
+    const maxProgress = 100;
+    const barWidth = 45;
+    const barSpacing = 35;
+    const containerHeight = 256;
+    const chartWidth = data.length * (barWidth + barSpacing) + 60;
+    const topPadding = 25;
+    const bottomPadding = 55;
+    const availableHeight = containerHeight - topPadding - bottomPadding;
+
+    return (
+      <div className="overflow-x-auto">
+        <svg 
+          width={chartWidth} 
+          height={containerHeight} 
+          viewBox={`0 0 ${chartWidth} ${containerHeight}`}
+        >
+          {/* Grid lines */}
+          {[0, 25, 50, 75, 100].map((value) => (
+            <g key={value}>
+              <line
+                x1="40"
+                y1={topPadding + availableHeight * (1 - value / 100)}
+                x2={chartWidth - 15}
+                y2={topPadding + availableHeight * (1 - value / 100)}
+                stroke="#e5e7eb"
+                strokeDasharray="2,2"
+              />
+              <text
+                x="35"
+                y={topPadding + availableHeight * (1 - value / 100) + 3}
+                fontSize="9"
+                textAnchor="end"
+                fill="#6b7280"
+              >
+                {value}%
+              </text>
+            </g>
+          ))}
+          
+          {/* Bars */}
+          {data.map((item, index) => {
+            const barHeight = (item.progress / maxProgress) * availableHeight;
+            const x = index * (barWidth + barSpacing) + 50;
+            const y = topPadding + availableHeight - barHeight;
+            const shortName = shortenName(item.name);
+            
+            // Split name into words for wrapping
+            const words = shortName.split(' ');
+            const lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+              if ((currentLine + ' ' + word).length <= 10) {
+                currentLine = currentLine ? currentLine + ' ' + word : word;
+              } else {
+                if (currentLine) lines.push(currentLine);
+                currentLine = word;
+              }
+            });
+            if (currentLine) lines.push(currentLine);
+            
+            return (
+              <g key={item.name}>
+                <rect
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={barHeight}
+                  fill="#3b82f6"
+                  rx="3"
+                />
+                
+                {/* Progress value */}
+                <text
+                  x={x + barWidth / 2}
+                  y={y - 3}
+                  fontSize="10"
+                  textAnchor="middle"
+                  fill="#1f2937"
+                  fontWeight="bold"
+                >
+                  {item.progress}%
+                </text>
+                
+                {/* Activity name with text wrapping and rotation */}
+                {lines.slice(0, 2).map((line, lineIndex) => (
+                  <text
+                    key={lineIndex}
+                    x={x + barWidth / 2}
+                    y={containerHeight - bottomPadding + 20 + lineIndex * 10}
+                    fontSize="7"
+                    textAnchor="middle"
+                    fill="#374151"
+                    transform={`rotate(-25 ${x + barWidth / 2} ${containerHeight - bottomPadding + 20 + lineIndex * 10})`}
+                  >
+                    {line}
+                  </text>
+                ))}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+    );
+  };
   
   const [formData, setFormData] = useState<ActivityFormData>({
     name: "",
@@ -100,8 +568,6 @@ export default function ActivitiesPage() {
       currentData.date !== initialProgressFormData.date ||
       currentData.progress_percent !== initialProgressFormData.progress_percent ||
       currentData.remarks !== initialProgressFormData.remarks ||
-      currentData.updated_by !== initialProgressFormData.updated_by ||
-      currentData.location !== initialProgressFormData.location ||
       !!selectedImage !== !!imagePreview;
     
     setHasFormChanges(hasChanges);
@@ -110,24 +576,33 @@ export default function ActivitiesPage() {
 
   // Handle escape key press
   const handleEscapeKey = useCallback(() => {
-    if (!showProgressForm) return;
+    // Handle View Updates modal
+    if (showUpdatesModal) {
+      setShowUpdatesModal(false);
+      setSelectedActivityForUpdates("");
+      setAllProgressUpdates([]);
+      return;
+    }
     
-    if (hasFormChanges) {
-      if (window.confirm("You have unsaved changes. Are you sure you want to exit?")) {
+    // Handle Progress Form modal
+    if (showProgressForm) {
+      if (hasFormChanges) {
+        if (window.confirm("You have unsaved changes. Are you sure you want to exit?")) {
+          setShowProgressForm(false);
+          setSelectedActivity("");
+          setProgressErrors({});
+          clearImageSelection();
+          setHasFormChanges(false);
+        }
+      } else {
         setShowProgressForm(false);
         setSelectedActivity("");
         setProgressErrors({});
         clearImageSelection();
         setHasFormChanges(false);
       }
-    } else {
-      setShowProgressForm(false);
-      setSelectedActivity("");
-      setProgressErrors({});
-      clearImageSelection();
-      setHasFormChanges(false);
     }
-  }, [showProgressForm, hasFormChanges]);
+  }, [showProgressForm, showUpdatesModal, hasFormChanges]);
 
   // Handle enter key press for form submission
   const handleEnterKey = useCallback((e: KeyboardEvent) => {
@@ -212,11 +687,18 @@ export default function ActivitiesPage() {
 
       if (activitiesError) {
         console.error("Error fetching activities:", activitiesError);
+        setActivities([]);
+        return;
+      }
+
+      // If no real data, set empty activities array
+      if (!activitiesData || activitiesData.length === 0) {
+        setActivities([]);
         return;
       }
 
       // Set activities immediately without progress
-      const activitiesWithoutProgress: ActivityWithProgress[] = (activitiesData || []).map(activity => ({
+      const activitiesWithoutProgress: ActivityWithProgress[] = activitiesData.map(activity => ({
         ...activity,
         latest_progress: null
       }));
@@ -224,10 +706,11 @@ export default function ActivitiesPage() {
       setActivities(activitiesWithoutProgress);
       
       // Fetch latest progress separately (light query)
-      fetchLatestProgressForActivities(activitiesData || []);
+      fetchLatestProgressForActivities(activitiesData);
       
     } catch (err) {
       console.error("Exception fetching activities:", err);
+      setActivities([]);
     } finally {
       setLoading(false);
     }
@@ -607,12 +1090,12 @@ export default function ActivitiesPage() {
       if (error) {
         console.error("Error creating progress update:", error);
         console.error("Error details:", JSON.stringify(error, null, 2));
-        alert("Error creating progress update: " + error.message);
+        setError('Failed to submit progress. Please try again.');
         return;
       }
 
       console.log("Progress update created successfully:", data);
-      alert("Progress updated successfully!");
+      showToast('Progress updated successfully');
       
       // Reset form and close immediately
       setProgressFormData({
@@ -1002,6 +1485,12 @@ export default function ActivitiesPage() {
             >
               Add Activity
             </button>
+            <button
+              onClick={() => router.push('/projects-list')}
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              View Projects
+            </button>
           </div>
 
           {/* Zone Selector */}
@@ -1024,10 +1513,150 @@ export default function ActivitiesPage() {
             </select>
           </div>
 
+          {/* Delayed Activities Warning Banner */}
+          {getStatistics().delayedActivities > 0 && (
+            <div 
+              className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 cursor-pointer hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+              onClick={() => {
+                // Scroll to first delayed activity
+                const delayedActivities = activities.filter(activity => {
+                  const plannedEnd = new Date(activity.planned_end);
+                  const progress = activity.latest_progress?.progress_percent || 0;
+                  return progress < 100 && new Date() > plannedEnd;
+                });
+                
+                if (delayedActivities.length > 0) {
+                  const firstDelayedId = `activity-${delayedActivities[0].id}`;
+                  const element = document.getElementById(firstDelayedId);
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add highlight effect
+                    element.classList.add('ring-2', 'ring-red-500', 'ring-offset-2');
+                    setTimeout(() => {
+                      element.classList.remove('ring-2', 'ring-red-500', 'ring-offset-2');
+                    }, 2000);
+                  }
+                }
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="text-2xl mr-3">⚠️</span>
+                  <div>
+                    <div className="text-red-800 dark:text-red-200 font-semibold">
+                      {getStatistics().delayedActivities} {getStatistics().delayedActivities === 1 ? 'activity' : 'activities'} delayed
+                    </div>
+                    <div className="text-red-600 dark:text-red-300 text-sm">
+                      Click to scroll to delayed activities
+                    </div>
+                  </div>
+                </div>
+                <svg className="w-5 h-5 text-red-600 dark:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {/* TOP: Health Score & Statistics */}
+          {activities.length > 0 && (
+            <div className="mt-8 space-y-6">
+              {/* Health Score Card */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <div className={`text-4xl font-bold ${getStatistics().scoreColor}`}>
+                      Health Score: {getStatistics().healthScore}%
+                    </div>
+                    <div className="text-gray-600 dark:text-gray-400 mt-2">
+                      {getStatistics().statusMessage}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      Score Formula: (Completed × 60%) + (In Progress × 30%) - (Delayed × 40%)
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Statistics Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
+                    <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                      {getStatistics().totalActivities}
+                    </div>
+                    <div className="text-sm text-blue-700 dark:text-blue-300">Total Activities</div>
+                  </div>
+                  <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center">
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                      {getStatistics().totalActivities - getStatistics().delayedActivities}
+                    </div>
+                    <div className="text-sm text-green-700 dark:text-green-300">On Time</div>
+                  </div>
+                  <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 text-center">
+                    <div className="text-3xl font-bold text-red-600 dark:text-red-400">
+                      {getStatistics().delayedActivities}
+                    </div>
+                    <div className="text-sm text-red-700 dark:text-red-300">Delayed</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* MIDDLE: Charts Side-by-Side */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Pie Chart */}
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Activity Status Distribution
+                  </h3>
+                  <div className="flex justify-center">
+                    {renderPieChart()}
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    {getPieChartData().map((item, index) => (
+                      <div key={index} className="flex items-center justify-between text-sm">
+                        <div className="flex items-center">
+                          <div 
+                            className="w-3 h-3 rounded-full mr-2"
+                            style={{ backgroundColor: item.color }}
+                          ></div>
+                          <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
+                        </div>
+                        <span className="font-medium text-gray-900 dark:text-white">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bar Chart */}
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Top 10 Activities by Progress
+                  </h3>
+                  <div className="h-64">
+                    {renderBarChart()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* BOTTOM: Activities List Header */}
+          {!loading && activities.length > 0 && (
+            <div className="mt-8 mb-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Activities</h2>
+              <p className="text-gray-600 dark:text-gray-400">
+                Manage and track project activities
+              </p>
+            </div>
+          )}
+
           {/* Activities List */}
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map((i) => (
+                <SkeletonCard key={i} />
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1054,11 +1683,16 @@ export default function ActivitiesPage() {
                   </div>
                 </div>
               ) : (
-                activities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
-                  >
+                sortActivities(activities).map((activity) => {
+                  const delayed = isActivityDelayed(activity);
+                  return (
+                    <div
+                      key={activity.id}
+                      id={`activity-${activity.id}`}
+                      className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 ${
+                        delayed ? 'border-2 border-red-500' : ''
+                      }`}
+                    >
                     <div className="p-6">
                       {/* Activity Header */}
                       <div className="flex justify-between items-start mb-4">
@@ -1183,10 +1817,12 @@ export default function ActivitiesPage() {
                       {/* Action Buttons */}
                       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
                         <button
+                          type="button"
                           onClick={() => handleUpdateProgress(activity.id)}
-                          className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow hover:shadow-md"
+                          disabled={submitting}
+                          className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow hover:shadow-md disabled:cursor-not-allowed"
                         >
-                          Update Progress
+                          {submitting ? 'Submitting...' : 'Update Progress'}
                         </button>
                         <button
                           onClick={() => handleViewUpdates(activity.id)}
@@ -1197,7 +1833,8 @@ export default function ActivitiesPage() {
                       </div>
                     </div>
                   </div>
-                ))
+                  );
+                })
               )}
             </div>
           )}
@@ -1618,67 +2255,89 @@ export default function ActivitiesPage() {
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-4 overflow-y-auto max-h-[60vh]">
-                    {allProgressUpdates.map((update) => (
-                      <div key={update.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-                        <div className="mb-4">
-                          {/* Date and Progress Header */}
-                          <div className="flex items-center justify-between mb-3">
-                            <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {update.progress_percent}%
-                            </span>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="overflow-y-auto max-h-[60vh]">
+                    {/* Timeline Container */}
+                    <div className="relative">
+                      {/* Timeline Line */}
+                      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-300 dark:bg-gray-600"></div>
+                      
+                      {/* Timeline Items */}
+                      {allProgressUpdates.map((update, index) => (
+                        <div key={update.id} className="relative flex items-start mb-8 last:mb-0">
+                          {/* Left Side - Timeline */}
+                          <div className="flex flex-col items-center mr-6 relative z-10">
+                            {/* Timeline Dot */}
+                            <div className="w-3 h-3 bg-blue-500 rounded-full border-2 border-white dark:border-gray-800 shadow-md"></div>
+                            {/* Date */}
+                            <div className="text-xs font-bold text-gray-700 dark:text-gray-300 mt-2 text-center whitespace-nowrap">
                               {new Date(update.date).toLocaleDateString('en-GB', { 
                                 day: 'numeric', 
                                 month: 'short', 
                                 year: 'numeric' 
                               })}
-                            </span>
-                          </div>
-                          
-                          {/* Updated By and Location */}
-                          {(update.updated_by || update.location) && (
-                            <div className="space-y-1 mb-3">
-                              {update.updated_by && (
-                                <div className="text-sm text-gray-600 dark:text-gray-300">
-                                  <span className="font-medium">Updated by:</span> {update.updated_by}
-                                </div>
-                              )}
-                              {update.location && (
-                                <div className="text-sm text-gray-600 dark:text-gray-300">
-                                  <span className="font-medium">At:</span> {update.location}
-                                </div>
-                              )}
                             </div>
-                          )}
-                          
-                          {/* Remarks */}
-                          {update.remarks && (
-                            <p className="text-gray-600 dark:text-gray-300 text-sm mt-3">
-                              {update.remarks}
-                            </p>
-                          )}
-                        </div>
-                        
-                        {/* Image */}
-                        {update.image_url && (
-                          <div className="mt-4">
-                            <img 
-                              src={update.image_url} 
-                              alt="Progress update" 
-                              width="100%"
-                              className="rounded-lg border border-gray-300 dark:border-gray-600"
-                            />
                           </div>
-                        )}
-                      </div>
-                    ))}
+                          
+                          {/* Right Side - Content Card */}
+                          <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+                            {/* Progress Percentage */}
+                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                              {update.progress_percent}%
+                            </div>
+                            
+                            {/* Updated By */}
+                            {update.updated_by && (
+                              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                <span className="font-medium">Updated by:</span> {update.updated_by}
+                              </div>
+                            )}
+                            
+                            {/* Location */}
+                            {update.location && (
+                              <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                                <span className="font-medium">Location:</span> {update.location}
+                              </div>
+                            )}
+                            
+                            {/* Remarks */}
+                            {update.remarks && (
+                              <div className="text-gray-700 dark:text-gray-300 text-sm mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
+                                {update.remarks}
+                              </div>
+                            )}
+                            
+                            {/* Image */}
+                            {update.image_url && (
+                              <div className="mt-4">
+                                <img 
+                                  src={update.image_url} 
+                                  alt="Progress update" 
+                                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 cursor-pointer transition-transform hover:scale-105"
+                                  style={{ maxHeight: '200px', objectFit: 'cover' }}
+                                  onClick={() => {
+                                    // Optional: Add image expansion logic here
+                                    window.open(update.image_url, '_blank');
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
             </div>
           )}
         </div>
+      
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
+          {toast}
+        </div>
+      )}
       </div>
     </div>
   );

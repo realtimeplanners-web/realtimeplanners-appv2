@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../lib/supabase";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Set dynamic page title
+  useEffect(() => {
+    document.title = "Super Admin | RTP";
+  }, [searchParams]); // Include searchParams to handle URL changes
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -32,6 +41,11 @@ export default function Page() {
   const [editingProject, setEditingProject] = useState<string | null>(null);
   const [editOrgName, setEditOrgName] = useState("");
   const [editProjectName, setEditProjectName] = useState("");
+  const [editProjectClient, setEditProjectClient] = useState("");
+  const [editProjectLocation, setEditProjectLocation] = useState("");
+  const [editProjectStatus, setEditProjectStatus] = useState("");
+  const [editProjectStartDate, setEditProjectStartDate] = useState("");
+  const [editProjectEndDate, setEditProjectEndDate] = useState("");
 
   // Sort and filter states
   const [orgSortField, setOrgSortField] = useState<"name" | "created_at">("created_at");
@@ -41,16 +55,106 @@ export default function Page() {
   const [orgFilter, setOrgFilter] = useState("");
   const [projectFilter, setProjectFilter] = useState("");
 
-  // ✅ DARK MODE PERSIST
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") setDark(true);
+  // State persistence utilities
+  const updateURLParams = useCallback((params: Record<string, string>) => {
+    const newParams = new URLSearchParams(searchParams.toString());
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+    const url = `${newParams.toString() ? '?' + newParams.toString() : ''}`;
+    router.push(url, { scroll: false });
+  }, [searchParams, router]);
+
+  const saveToLocalStorage = useCallback((key: string, value: any) => {
+    try {
+      localStorage.setItem(`dashboard_${key}`, JSON.stringify(value));
+    } catch (error) {
+      console.warn('Failed to save to localStorage:', error);
+    }
   }, []);
 
+  const loadFromLocalStorage = useCallback((key: string, defaultValue: any = null) => {
+    try {
+      const item = localStorage.getItem(`dashboard_${key}`);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (error) {
+      console.warn('Failed to load from localStorage:', error);
+      return defaultValue;
+    }
+  }, []);
+
+  // Initialize state from URL params and localStorage
   useEffect(() => {
-    localStorage.setItem("theme", dark ? "dark" : "light");
+    // Restore tab from URL params first, then localStorage
+    const tabFromURL = searchParams.get('tab');
+    const tabFromStorage = loadFromLocalStorage('activeTab', 'dashboard');
+    setActiveTab(tabFromURL || tabFromStorage);
+
+    // Restore selected org
+    const orgFromURL = searchParams.get('org');
+    const orgFromStorage = loadFromLocalStorage('selectedOrg', '');
+    setSelectedOrg(orgFromURL || orgFromStorage);
+
+    // Restore sidebar state
+    const sidebarOpen = loadFromLocalStorage('sidebarOpen', true);
+    setSidebarOpen(sidebarOpen);
+
+    // Restore sort and filter states
+    setOrgSortField(loadFromLocalStorage('orgSortField', 'created_at'));
+    setOrgSortOrder(loadFromLocalStorage('orgSortOrder', 'desc'));
+    setProjectSortField(loadFromLocalStorage('projectSortField', 'created_at'));
+    setProjectSortOrder(loadFromLocalStorage('projectSortOrder', 'desc'));
+    setOrgFilter(loadFromLocalStorage('orgFilter', ''));
+    setProjectFilter(loadFromLocalStorage('projectFilter', ''));
+
+    // Restore dark mode
+    const darkMode = loadFromLocalStorage('darkMode', false);
+    setDark(darkMode);
+  }, [searchParams]); // Run when searchParams change
+
+  // Save state changes to URL params and localStorage
+  useEffect(() => {
+    updateURLParams({ tab: activeTab });
+    saveToLocalStorage('activeTab', activeTab);
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (selectedOrg) {
+      updateURLParams({ org: selectedOrg });
+      saveToLocalStorage('selectedOrg', selectedOrg);
+    }
+  }, [selectedOrg]);
+
+  useEffect(() => {
+    saveToLocalStorage('sidebarOpen', sidebarOpen);
+  }, [sidebarOpen]);
+
+  useEffect(() => {
+    saveToLocalStorage('orgSortField', orgSortField);
+    saveToLocalStorage('orgSortOrder', orgSortOrder);
+    saveToLocalStorage('projectSortField', projectSortField);
+    saveToLocalStorage('projectSortOrder', projectSortOrder);
+  }, [orgSortField, orgSortOrder, projectSortField, projectSortOrder]);
+
+  useEffect(() => {
+    saveToLocalStorage('orgFilter', orgFilter);
+    saveToLocalStorage('projectFilter', projectFilter);
+  }, [orgFilter, projectFilter]);
+
+  useEffect(() => {
+    saveToLocalStorage('darkMode', dark);
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [dark]);
 
+  
   const toggleTheme = () => {
     const newTheme = !dark;
     setDark(newTheme);
@@ -68,23 +172,27 @@ export default function Page() {
   };
 
   const fetchProjects = async (orgId: string) => {
-    if (!orgId) {
-      setProjects([]);
-      return;
-    }
-  const fetchAdmins = async () => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("role", "org_admin");
-
-  if (!error) setAdmins(data || []);
-};
-    const { data, error } = await supabase
+    // If no organization selected, show all projects for superadmin
+    // If organization selected, filter by that organization
+    let query = supabase
       .from("projects")
-      .select("*")
-      .eq("organization_id", orgId)
-      .order("id", { ascending: false });
+      .select(`
+        id,
+        name,
+        client_name,
+        status,
+        created_at,
+        organizations (
+          name
+        )
+      `);
+
+    // Filter by organization if one is selected
+    if (orgId && orgId !== "") {
+      query = query.eq("organization_id", orgId);
+    }
+
+    const { data, error } = await query.order("created_at", { ascending: false });
 
     if (!error) setProjects(data || []);
   };
@@ -185,20 +293,7 @@ export default function Page() {
     await fetchOrganizations();
   };
 
-  // CREATE PROJECT
-  const createProject = async () => {
-    if (!newProject || !selectedOrg) return;
-
-    await supabase.from("projects").insert({
-      name: newProject,
-      organization_id: selectedOrg,
-    });
-
-    setNewProject("");
-    await fetchProjects(selectedOrg);
-    await fetchAllProjects();
-  };
-
+  
   // CREATE ORG ADMIN
   const createOrgAdmin = async () => {
     try {
@@ -306,6 +401,11 @@ export default function Page() {
   const startEditProject = (project: any) => {
     setEditingProject(project.id);
     setEditProjectName(project.name);
+    setEditProjectClient(project.client_name || "");
+    setEditProjectLocation(project.location || "");
+    setEditProjectStatus(project.status || "");
+    setEditProjectStartDate(project.start_date || "");
+    setEditProjectEndDate(project.end_date || "");
   };
 
   const saveEditProject = async () => {
@@ -313,11 +413,23 @@ export default function Page() {
 
     await supabase
       .from("projects")
-      .update({ name: editProjectName })
+      .update({ 
+        name: editProjectName,
+        client_name: editProjectClient,
+        location: editProjectLocation,
+        status: editProjectStatus,
+        start_date: editProjectStartDate,
+        end_date: editProjectEndDate
+      })
       .eq("id", editingProject);
 
     setEditingProject(null);
     setEditProjectName("");
+    setEditProjectClient("");
+    setEditProjectLocation("");
+    setEditProjectStatus("");
+    setEditProjectStartDate("");
+    setEditProjectEndDate("");
     await fetchProjects(selectedOrg);
     await fetchAllProjects();
   };
@@ -325,6 +437,11 @@ export default function Page() {
   const cancelEditProject = () => {
     setEditingProject(null);
     setEditProjectName("");
+    setEditProjectClient("");
+    setEditProjectLocation("");
+    setEditProjectStatus("");
+    setEditProjectStartDate("");
+    setEditProjectEndDate("");
   };
 
   
@@ -370,9 +487,16 @@ export default function Page() {
   };
 
   const getFilteredAndSortedProjects = () => {
-    let filtered = projects.filter(project => 
-      project.name.toLowerCase().includes(projectFilter.toLowerCase())
-    );
+    console.log("🔍 DEBUG: Projects array:", projects);
+    console.log("🔍 DEBUG: Project filter value:", projectFilter);
+    
+    let filtered = projects.filter(project => {
+      console.log("🔍 DEBUG: Project item:", project);
+      console.log("🔍 DEBUG: Project name:", project.name);
+      return project.name.toLowerCase().includes(projectFilter.toLowerCase());
+    });
+
+    console.log("🔍 DEBUG: Filtered projects:", filtered);
 
     return filtered.sort((a, b) => {
       let aValue = a[projectSortField];
@@ -474,6 +598,21 @@ export default function Page() {
                 </svg>
               </div>
               {sidebarOpen && <span className="font-semibold uppercase tracking-wide text-sm">Projects</span>}
+            </div>
+
+            {/* PROJECT DASHBOARD */}
+            <div
+              onClick={() => window.location.href = "/project-dashboard"}
+              className={`flex ${sidebarOpen ? 'items-center gap-3' : 'justify-center'} p-3 rounded-xl cursor-pointer transition-all duration-300 border ${
+                "border-transparent hover:bg-white/5 hover:border-white/10"
+              }`}
+            >
+              <div className={`w-5 h-5 flex items-center justify-center text-gray-400`}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              {sidebarOpen && <span className="font-semibold uppercase tracking-wide text-sm">Project Dashboard</span>}
             </div>
 
             {/* ORG ADMINS */}
@@ -657,17 +796,9 @@ export default function Page() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <input
-                    value={newProject}
-                    onChange={(e) => setNewProject(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && createProject()}
-                    placeholder="New Project"
-                    suppressHydrationWarning
-                    className="w-full mb-4 px-4 py-2.5 border border-purple-200 dark:border-purple-800 rounded-xl bg-white dark:bg-black/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 backdrop-blur-sm"
-                  />
-
+                  
                   <button
-                    onClick={createProject}
+                    onClick={() => router.push('/create-project')}
                     className="w-full mb-4 group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:scale-105"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -916,16 +1047,8 @@ export default function Page() {
                           </option>
                         ))}
                       </select>
-                      <input
-                        value={newProject}
-                        onChange={(e) => setNewProject(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && createProject()}
-                        placeholder="New Project"
-                        suppressHydrationWarning
-                        className="px-4 py-2.5 border border-purple-200 dark:border-purple-800 rounded-xl bg-white dark:bg-black/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 backdrop-blur-sm"
-                      />
-                      <button
-                        onClick={createProject}
+                                            <button
+                        onClick={() => router.push('/create-project')}
                         className="group relative inline-flex items-center justify-center px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transform hover:scale-105"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -953,6 +1076,21 @@ export default function Page() {
                         </button>
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
+                        CLIENT NAME
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
+                        LOCATION
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
+                        STATUS
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
+                        START DATE
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
+                        END DATE
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
                         ORGANIZATION
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-black text-purple-700 dark:text-purple-300 uppercase tracking-wider">
@@ -974,7 +1112,7 @@ export default function Page() {
                   <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
                     {getFilteredAndSortedProjects().length === 0 ? (
                       <tr>
-                        <td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                        <td colSpan={8} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
                           <div className="flex flex-col items-center gap-3">
                             <svg className="w-12 h-12 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -1008,6 +1146,92 @@ export default function Page() {
                             )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
+                            {editingProject === project.id ? (
+                              <input
+                                type="text"
+                                value={editProjectClient}
+                                onChange={(e) => setEditProjectClient(e.target.value)}
+                                className="px-3 py-1 border border-indigo-300 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Client name"
+                              />
+                            ) : (
+                              <span className="text-sm text-gray-900 dark:text-white">
+                                {project.client_name || 'N/A'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {editingProject === project.id ? (
+                              <input
+                                type="text"
+                                value={editProjectLocation}
+                                onChange={(e) => setEditProjectLocation(e.target.value)}
+                                className="px-3 py-1 border border-indigo-300 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Location"
+                              />
+                            ) : (
+                              <span className="text-sm text-gray-900 dark:text-white">
+                                {project.location || 'N/A'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {editingProject === project.id ? (
+                              <select
+                                value={editProjectStatus}
+                                onChange={(e) => setEditProjectStatus(e.target.value)}
+                                className="px-3 py-1 border border-indigo-300 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                              >
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Upcoming">Upcoming</option>
+                              </select>
+                            ) : (
+                              <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                                project.status === 'Active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                                project.status === 'Pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                project.status === 'Completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                                project.status === 'On Hold' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200' :
+                                project.status === 'Cancelled' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
+                                project.status === 'Upcoming' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' :
+                                'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                              }`}>
+                                {project.status || 'Unknown'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {editingProject === project.id ? (
+                              <input
+                                type="date"
+                                value={editProjectStartDate}
+                                onChange={(e) => setEditProjectStartDate(e.target.value)}
+                                className="px-3 py-1 border border-indigo-300 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                              />
+                            ) : (
+                              <span>
+                                {project.start_date ? new Date(project.start_date).toLocaleDateString() : 'N/A'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {editingProject === project.id ? (
+                              <input
+                                type="date"
+                                value={editProjectEndDate}
+                                onChange={(e) => setEditProjectEndDate(e.target.value)}
+                                className="px-3 py-1 border border-indigo-300 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                              />
+                            ) : (
+                              <span>
+                                {project.end_date ? new Date(project.end_date).toLocaleDateString() : 'N/A'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900 dark:to-indigo-900 rounded flex items-center justify-center">
                                 <svg className="w-3 h-3 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1015,7 +1239,7 @@ export default function Page() {
                                 </svg>
                               </div>
                               <span className="text-sm text-gray-900 dark:text-white">
-                                {orgs.find(o => o.id === project.organization_id)?.name || 'Unknown'}
+                                {project.organizations?.name || 'Unknown'}
                               </span>
                             </div>
                           </td>
@@ -1052,7 +1276,10 @@ export default function Page() {
                                   </svg>
                                   Edit
                                 </button>
-                                <button className="inline-flex items-center px-3 py-1 text-xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-gray-700 rounded transition-colors">
+                                <button 
+                                  onClick={() => router.push(`/project-details?project_id=${project.id}`)}
+                                  className="inline-flex items-center px-3 py-1 text-xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-gray-700 rounded transition-colors"
+                                >
                                   <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -1186,7 +1413,7 @@ export default function Page() {
                               {admin.email}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                              {orgs.find((o) => o.id === admin.organization_id)?.name || "Unknown"}
+                              {orgs.find((o) => o.id === 1)?.name || "Organization 1"}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">
                               {admin.role}
