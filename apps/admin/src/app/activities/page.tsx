@@ -32,7 +32,7 @@ interface Activity {
   quantity?: number;
   unit?: string;
   boq_rate?: number;
-  task?: Task;
+  task?: Task | null;
 }
 
 interface Zone {
@@ -1301,7 +1301,6 @@ export default function ActivitiesPage() {
   const getCurrentLocation = async (): Promise<string> => {
     return new Promise((resolve) => {
       if (!navigator.geolocation) {
-        console.log("Geolocation is not supported by this browser");
         resolve("Location not available");
         return;
       }
@@ -1309,71 +1308,41 @@ export default function ActivitiesPage() {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          console.log("Got coordinates:", latitude, longitude);
 
           try {
-            // Try Google Maps Geocoding API for detailed location
-            const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "YOUR_GOOGLE_MAPS_API_KEY";
-            
-            // Only attempt API call if we have a real API key
-            if (apiKey && apiKey !== "YOUR_GOOGLE_MAPS_API_KEY") {
-              const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`
-              );
-              
-              if (response.ok) {
-                const data = await response.json();
-                if (data.results && data.results.length > 0) {
-                  const result = data.results[0];
-                  
-                  // Extract detailed location components
-                  const components = result.address_components;
-                  let area = "";
-                  let city = "";
-                  let state = "";
-                  
-                  components.forEach((component: any) => {
-                    const types = component.types;
-                    
-                    // Extract area/locality (sublocality or locality)
-                    if (!area && (types.includes("sublocality") || types.includes("sublocality_level_1") || types.includes("sublocality_level_2"))) {
-                      area = component.long_name;
-                    }
-                    
-                    // Extract city (locality or administrative_area_level_2)
-                    if (!city && (types.includes("locality") || types.includes("administrative_area_level_2"))) {
-                      city = component.long_name;
-                    }
-                    
-                    // Extract state (administrative_area_level_1)
-                    if (!state && types.includes("administrative_area_level_1")) {
-                      state = component.long_name;
-                    }
-                  });
-                  
-                  // Build detailed location string
-                  const locationParts = [];
-                  if (area) locationParts.push(area);
-                  if (city) locationParts.push(city);
-                  if (state) locationParts.push(state);
-                  
-                  const locationName = locationParts.length > 0 
-                    ? locationParts.join(", ")
-                    : result.formatted_address;
-                  
-                  console.log("Got detailed address:", locationName);
-                  resolve(locationName);
-                  return;
-                }
+            // Free reverse geocoding via OpenStreetMap Nominatim (no API key required)
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+              { headers: { "User-Agent": "RealTimePlanners/1.0" } }
+            );
+
+            if (response.ok) {
+              const data = await response.json();
+              if (data && data.address) {
+                const addr = data.address;
+                const area = addr.suburb || addr.neighbourhood || addr.quarter || addr.village || "";
+                const city = addr.city || addr.town || addr.county || "";
+                const state = addr.state || "";
+
+                const locationParts: string[] = [];
+                if (area) locationParts.push(area);
+                if (city) locationParts.push(city);
+                if (state) locationParts.push(state);
+
+                const locationName = locationParts.length > 0
+                  ? locationParts.join(", ")
+                  : data.display_name;
+
+                resolve(locationName);
+                return;
               }
             }
           } catch (error) {
-            console.error("Error getting address from Google Maps API:", error);
+            console.error("Error getting address from Nominatim:", error);
           }
 
-          // Fallback to a more readable location based on coordinates
+          // Fallback to coordinate-based lookup
           const locationName = getLocationNameFromCoordinates(latitude, longitude);
-          console.log("Using fallback location:", locationName);
           resolve(locationName);
         },
         (error) => {

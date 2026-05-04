@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { useSearchParams, useRouter } from "next/navigation";
 import PictorialViewer from "../../components/PictorialViewer";
@@ -74,13 +74,15 @@ export default function PictorialPage() {
     try {
       const { data, error } = await supabase
         .from("projects")
-        .select("id, name, client_name, location, start_date, end_date")
+        .select("id, project_name, client_name, location, start_date, end_date")
         .order("created_at", { ascending: false });
 
       if (error) throw error;
       setProjects(data || []);
     } catch (err) {
       console.error("Error fetching projects:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -192,7 +194,7 @@ export default function PictorialPage() {
                 <option value="">Choose a project...</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
-                    {project.name} - {project.client_name}
+                    {project.project_name} - {project.client_name}
                   </option>
                 ))}
               </select>
@@ -229,7 +231,7 @@ export default function PictorialPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {project.name}
+                        {project.project_name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         Client: {project.client_name} | Location: {project.location || 'N/A'}

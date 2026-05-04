@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "../lib/supabase";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   name: string;
@@ -13,13 +13,12 @@ interface FormData {
 }
 
 export default function CreateProjectSAdminPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   
   // Set dynamic page title
   useEffect(() => {
     document.title = "Create Project (Super Admin) | RTP";
-  }, [searchParams]);
+  }, []);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -34,20 +33,6 @@ export default function CreateProjectSAdminPage() {
   const [loading, setLoading] = useState(false);
   const [dark, setDark] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
-
-  // State persistence utilities
-  const updateURLParams = useCallback((params: Record<string, string>) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    Object.entries(params).forEach(([key, value]) => {
-      if (value) {
-        newParams.set(key, value);
-      } else {
-        newParams.delete(key);
-      }
-    });
-    const url = `${newParams.toString() ? '?' + newParams.toString() : ''}`;
-    router.push(url, { scroll: false });
-  }, [searchParams, router]);
 
   const saveToLocalStorage = useCallback((key: string, value: any) => {
     try {
@@ -101,19 +86,14 @@ export default function CreateProjectSAdminPage() {
   // Fetch organizations for dropdown
   useEffect(() => {
     const fetchOrganizations = async () => {
-      console.log("🔍 DEBUG: Fetching organizations for super admin dropdown...");
       const { data: orgsData, error } = await supabase
         .from("organizations")
         .select("*")
-        .order("name", { ascending: true });
-
-      console.log("🔍 DEBUG: Organizations fetched:", orgsData);
-      console.log("🔍 DEBUG: Organizations error:", error);
+        .order("organization_name", { ascending: true });
 
       if (error) {
-        console.error("🔍 DEBUG: Error fetching organizations:", error);
+        console.error("Error fetching organizations:", error);
       } else {
-        console.log("🔍 DEBUG: Setting organizations state with:", orgsData?.length || 0, "organizations");
         setOrganizations(orgsData || []);
       }
     };
@@ -181,9 +161,6 @@ export default function CreateProjectSAdminPage() {
 
     setLoading(true);
 
-    console.log("🔍 DEBUG SUPER ADMIN CREATE: Selected organization ID:", selectedOrgId);
-    console.log("🔍 DEBUG SUPER ADMIN CREATE: Selected organization name:", selectedOrgName);
-
     // Get current user session
     const { data: { user } } = await supabase.auth.getUser();
     
@@ -209,7 +186,7 @@ export default function CreateProjectSAdminPage() {
 
     // Prepare project data - use selected organization from dropdown
     const projectData = {
-      name: formData.name.trim(),
+      project_name: formData.name.trim(),
       location: formData.location.trim(),
       start_date: formData.start_date,
       end_date: formData.end_date,
@@ -218,17 +195,12 @@ export default function CreateProjectSAdminPage() {
       created_by: userData.id, // Use public.users.id to satisfy foreign key constraint
     };
 
-    console.log("🔍 DEBUG SUPER ADMIN CREATE: Project data to insert:", projectData);
-
     try {
-      // Insert project
       const { data: insertResult, error: insertError } = await supabase
         .from("projects")
         .insert(projectData)
         .select()
         .single();
-
-      console.log("🔍 DEBUG SUPER ADMIN CREATE: Insert result:", { insertResult, insertError });
 
       if (insertError) {
         console.error("Error creating project:", insertError);
@@ -237,11 +209,6 @@ export default function CreateProjectSAdminPage() {
         return;
       }
 
-      // Verify the created project has the correct organization_id
-      console.log("🔍 DEBUG SUPER ADMIN CREATE: Created project:", insertResult);
-      console.log("🔍 DEBUG SUPER ADMIN CREATE: Created project organization_id:", insertResult?.organization_id);
-
-      console.log("Project created successfully by super admin:", insertResult);
       alert("Project created successfully!");
         
       // Redirect to Super Admin Dashboard
@@ -303,7 +270,7 @@ export default function CreateProjectSAdminPage() {
                 <option value="">Select an organization</option>
                 {organizations.map((org) => (
                   <option key={org.id} value={org.id}>
-                    {org.name}
+                    {org.organization_name}
                   </option>
                 ))}
               </select>
