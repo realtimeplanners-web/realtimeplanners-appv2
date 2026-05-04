@@ -12,14 +12,14 @@ interface FormData {
   status: string;
 }
 
-export default function CreateProjectPage() {
+export default function CreateProjectSAdminPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
   // Set dynamic page title
   useEffect(() => {
-    document.title = "Create Project | RTP";
-  }, [searchParams]); // Include searchParams to handle URL changes
+    document.title = "Create Project (Super Admin) | RTP";
+  }, [searchParams]);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -28,6 +28,9 @@ export default function CreateProjectPage() {
     end_date: "",
     status: "Active",
   });
+  const [selectedOrgName, setSelectedOrgName] = useState<string>("");
+  const [selectedOrgId, setSelectedOrgId] = useState<string>("");
+  const [organizations, setOrganizations] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [dark, setDark] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -48,7 +51,7 @@ export default function CreateProjectPage() {
 
   const saveToLocalStorage = useCallback((key: string, value: any) => {
     try {
-      localStorage.setItem(`createProject_${key}`, JSON.stringify(value));
+      localStorage.setItem(`createProjectSAdmin_${key}`, JSON.stringify(value));
     } catch (error) {
       console.warn('Failed to save to localStorage:', error);
     }
@@ -56,7 +59,7 @@ export default function CreateProjectPage() {
 
   const loadFromLocalStorage = useCallback((key: string, defaultValue: any = null) => {
     try {
-      const item = localStorage.getItem(`createProject_${key}`);
+      const item = localStorage.getItem(`createProjectSAdmin_${key}`);
       return item ? JSON.parse(item) : defaultValue;
     } catch (error) {
       console.warn('Failed to load from localStorage:', error);
@@ -79,7 +82,7 @@ export default function CreateProjectPage() {
     // Restore dark mode
     const darkMode = loadFromLocalStorage('darkMode', false);
     setDark(darkMode);
-  }, []); // Run only once on mount
+  }, []);
 
   // Save form data changes to localStorage
   useEffect(() => {
@@ -94,6 +97,29 @@ export default function CreateProjectPage() {
       document.documentElement.classList.remove('dark');
     }
   }, [dark]);
+
+  // Fetch organizations for dropdown
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      console.log("🔍 DEBUG: Fetching organizations for super admin dropdown...");
+      const { data: orgsData, error } = await supabase
+        .from("organizations")
+        .select("*")
+        .order("name", { ascending: true });
+
+      console.log("🔍 DEBUG: Organizations fetched:", orgsData);
+      console.log("🔍 DEBUG: Organizations error:", error);
+
+      if (error) {
+        console.error("🔍 DEBUG: Error fetching organizations:", error);
+      } else {
+        console.log("🔍 DEBUG: Setting organizations state with:", orgsData?.length || 0, "organizations");
+        setOrganizations(orgsData || []);
+      }
+    };
+
+    fetchOrganizations();
+  }, []);
 
   // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -120,7 +146,6 @@ export default function CreateProjectPage() {
       newErrors.name = "Project name is required";
     }
 
-    
     if (!formData.location.trim()) {
       newErrors.location = "Location is required";
     }
@@ -149,74 +174,78 @@ export default function CreateProjectPage() {
       return;
     }
 
+    if (!selectedOrgId) {
+      alert("Please select an organization before creating a project");
+      return;
+    }
+
     setLoading(true);
 
+    console.log("🔍 DEBUG SUPER ADMIN CREATE: Selected organization ID:", selectedOrgId);
+    console.log("🔍 DEBUG SUPER ADMIN CREATE: Selected organization name:", selectedOrgName);
+
+    // Get current user session
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      alert("You must be logged in to create a project");
+      setLoading(false);
+      return;
+    }
+
+    // Fetch correct user from public.users using email
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', user.email)
+      .single();
+
+    if (userError || !userData) {
+      console.error("Error fetching user from public.users:", userError);
+      alert("Error: User not found in public.users");
+      setLoading(false);
+      return;
+    }
+
+    // Prepare project data - use selected organization from dropdown
+    const projectData = {
+      name: formData.name.trim(),
+      location: formData.location.trim(),
+      start_date: formData.start_date,
+      end_date: formData.end_date,
+      organization_id: selectedOrgId, // Use selected organization ID from dropdown
+      status: formData.status,
+      created_by: userData.id, // Use public.users.id to satisfy foreign key constraint
+    };
+
+    console.log("🔍 DEBUG SUPER ADMIN CREATE: Project data to insert:", projectData);
+
     try {
-      // Get logged-in user
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      console.log("🔍 DEBUG: Auth user:", user);
-      
-      if (!user) {
-        alert("Please log in to create a project");
-        return;
-      }
-
-      // Fetch correct user from public.users using email
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('id, organization_id')
-        .eq('email', user.email)
-        .single();
-
-      if (userError || !userData) {
-        console.error("Error fetching user from public.users:", userError);
-        alert("Error: User not found in public.users");
-        return;
-      }
-
-      console.log("🔍 DEBUG CREATE: User data:", userData);
-      console.log("🔍 DEBUG CREATE: organization_id:", userData.organization_id);
-      console.log("🔍 DEBUG CREATE: organization_id type:", typeof userData.organization_id);
-
-      // Prepare project data - use correct organization_id and user ID from user data
-      const projectData = {
-        project_name: formData.name.trim(),
-        location: formData.location.trim(),
-        start_date: formData.start_date,
-        end_date: formData.end_date,
-        organization_id: userData.organization_id, // Use correct UUID from user data
-        status: formData.status,
-        created_by: userData.id, // Use public.users.id to satisfy foreign key constraint
-      };
-
-      console.log("🔍 DEBUG CREATE: Project data to insert:", projectData);
-
       // Insert project
-      const { data, error } = await supabase
+      const { data: insertResult, error: insertError } = await supabase
         .from("projects")
         .insert(projectData)
         .select()
         .single();
 
-      console.log("🔍 DEBUG CREATE: Insert result:", { data, error });
+      console.log("🔍 DEBUG SUPER ADMIN CREATE: Insert result:", { insertResult, insertError });
 
-      if (error) {
-        console.error("Error creating project:", error);
-        alert("Error creating project: " + error.message);
+      if (insertError) {
+        console.error("Error creating project:", insertError);
+        alert("Error creating project: " + insertError.message);
         setLoading(false);
         return;
       }
 
       // Verify the created project has the correct organization_id
-      console.log("🔍 DEBUG CREATE: Created project:", data);
-      console.log("🔍 DEBUG CREATE: Created project organization_id:", data?.organization_id);
+      console.log("🔍 DEBUG SUPER ADMIN CREATE: Created project:", insertResult);
+      console.log("🔍 DEBUG SUPER ADMIN CREATE: Created project organization_id:", insertResult?.organization_id);
 
-      console.log("Project created successfully:", data);
+      console.log("Project created successfully by super admin:", insertResult);
       alert("Project created successfully!");
         
-      // Redirect to Projects
-      router.push('/projects-list');
+      // Redirect to Super Admin Dashboard
+      router.push('/super-admin');
     } catch (err) {
       console.error("Exception creating project:", err);
       alert("An unexpected error occurred while creating the project.");
@@ -234,7 +263,7 @@ export default function CreateProjectPage() {
             <div className="flex items-center mb-4">
               <button
                 onClick={() => {
-                  window.location.href = "/projects-list";
+                  router.push('/super-admin');
                 }}
                 className="mr-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
@@ -243,12 +272,42 @@ export default function CreateProjectPage() {
                 </svg>
               </button>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Create New Project
+                Create New Project (Super Admin)
               </h1>
             </div>
             <p className="text-gray-600 dark:text-gray-400">
-              Fill in the details below to create a new project
+              Fill in the details below to create a new project as Super Admin
             </p>
+
+            {/* Organization Dropdown */}
+            <div className="mt-6">
+              <label htmlFor="organization" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Organization *
+              </label>
+              <select
+                id="organization"
+                name="organization"
+                value={selectedOrgId}
+                onChange={(e) => {
+                  const orgId = e.target.value;
+                  setSelectedOrgId(orgId);
+                  const org = organizations.find(o => o.id === orgId);
+                  setSelectedOrgName(org?.organization_name || "");
+                }}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  selectedOrgId
+                    ? "border-green-300 dark:border-green-600"
+                    : "border-gray-300 dark:border-gray-600"
+                } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+              >
+                <option value="">Select an organization</option>
+                {organizations.map((org) => (
+                  <option key={org.id} value={org.id}>
+                    {org.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Form */}
@@ -397,7 +456,7 @@ export default function CreateProjectPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    window.location.href = "/projects-list";
+                    router.push('/super-admin');
                   }}
                   className="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                   disabled={loading}
@@ -406,7 +465,7 @@ export default function CreateProjectPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
                   {loading ? (

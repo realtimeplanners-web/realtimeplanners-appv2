@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\USER\\\\Desktop\\\\realtimeplanners\" -Force | Select-Object Name, @{Name=\"Type\";Expression={if \\($_.PSIsContainer\\) { \"Dir\" } else { \"File\" }}} | Format-Table -AutoSize)",
+      "PowerShell(head *)"
+    ]
+  }
+}

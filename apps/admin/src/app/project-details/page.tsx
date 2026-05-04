@@ -2,27 +2,29 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface Project {
   id: string;
-  name: string;
+  project_name: string;
   client_name: string;
   location: string;
   start_date: string;
   end_date: string;
+  status: string;
   created_at: string;
 }
 
 interface Zone {
   id: string;
   project_id: string;
-  name: string;
+  zone_name: string;
   created_at: string;
 }
 
 export default function ProjectDetailsPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [zones, setZones] = useState<Zone[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,8 +36,8 @@ export default function ProjectDetailsPage() {
 
   // Set dynamic page title
   useEffect(() => {
-    if (project?.name) {
-      document.title = `${project.name} | RTP`;
+    if (project?.project_name) {
+      document.title = `${project.project_name} | RTP`;
     } else {
       document.title = "Project Details | RTP";
     }
@@ -72,7 +74,7 @@ export default function ProjectDetailsPage() {
     try {
       const { data, error } = await supabase
         .from("zones")
-        .select("*")
+        .select("id, project_id, zone_name, created_at")
         .eq("project_id", projectId)
         .order("created_at", { ascending: false });
 
@@ -112,9 +114,8 @@ export default function ProjectDetailsPage() {
       const { data, error } = await supabase
         .from("zones")
         .insert({
-          name: zoneName.trim(),
+          zone_name: zoneName.trim(),
           project_id: projectId,
-          company_id: 1, // Fixed company_id as requested
         })
         .select()
         .single();
@@ -143,8 +144,10 @@ export default function ProjectDetailsPage() {
 
   // Handle zone click - navigate to activities page
   const handleZoneClick = (zoneId: string, zoneName: string) => {
-    // Navigate to activities page with zone_id parameter
-    window.location.href = `/activities?zone_id=${zoneId}&zone_name=${encodeURIComponent(zoneName)}`;
+    // Navigate within same app window with full context
+    router.push(
+      `/activities?project_id=${projectId}&zone=${zoneId}&zone_id=${zoneId}&zone_name=${encodeURIComponent(zoneName)}`
+    );
   };
 
   // Calculate project status
@@ -188,7 +191,7 @@ export default function ProjectDetailsPage() {
               </p>
               <button
                 onClick={() => {
-                  window.location.href = "/projects-list";
+                  router.push("/projects-list");
                 }}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
               >
@@ -210,7 +213,7 @@ export default function ProjectDetailsPage() {
             <div className="flex items-center mb-4">
               <button
                 onClick={() => {
-                  window.location.href = "/projects-list";
+                  router.push("/projects-list");
                 }}
                 className="mr-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
@@ -236,7 +239,7 @@ export default function ProjectDetailsPage() {
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                        {project.name}
+                        {project.project_name}
                       </h2>
                       <div className="flex items-center space-x-4">
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(getProjectStatus(project.start_date, project.end_date))}`}>
@@ -315,12 +318,12 @@ export default function ProjectDetailsPage() {
                     zones.map((zone) => (
                       <div
                         key={zone.id}
-                        onClick={() => handleZoneClick(zone.id, zone.name)}
+                        onClick={() => handleZoneClick(zone.id, zone.zone_name)}
                         className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 transform hover:scale-105"
                       >
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {zone.name}
+                            {zone.zone_name}
                           </h3>
                           <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

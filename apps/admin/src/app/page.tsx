@@ -70,11 +70,14 @@ export default function Page() {
     const role = await checkUserRole(data.user.id);
 
     if (role === "super_admin") {
-      console.log("Redirecting super admin to /dashboard");
-      window.location.href = "/dashboard";
+      console.log("Redirecting super admin to /super-admin");
+      window.location.href = "/super-admin";
     } else if (role === "org_admin") {
       console.log("Redirecting org admin to /org-dashboard");
       window.location.href = "/org-dashboard";
+    } else if (role === "user") {
+      console.log("Redirecting user to /user-dashboard");
+      window.location.href = "/user-dashboard";
     } else {
       console.log("No valid role found, role:", role);
       alert("Unauthorized: No valid role found");

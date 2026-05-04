@@ -6,8 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 interface Project {
   id: string;
-  name: string;
-  client_name: string;
+  project_name: string;
   location: string;
   start_date: string;
   end_date: string;
@@ -22,6 +21,10 @@ export default function ProjectsListPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [dark, setDark] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string>('');
+  const [orgName, setOrgName] = useState<string>('');
 
   // Set dynamic page title
   useEffect(() => {
@@ -76,30 +79,99 @@ export default function ProjectsListPage() {
     }
   }, [dark]);
 
-  // Fetch projects from Supabase with organization join
+  // Fetch projects from Supabase with role-based access control
   const fetchProjects = async () => {
     try {
-      const { data, error } = await supabase
-        .from("projects")
-        .select(`
-          id,
-          name,
-          client_name,
-          location,
-          start_date,
-          end_date,
-          created_at,
-          updated_at
-        `)
-        .order("created_at", { ascending: false });
+      // Check authentication first
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.log("No authenticated user found");
+        setProjects([]);
+        setLoading(false);
+        return;
+      }
+
+      // Set user state for display
+      setUser(user);
+      console.log("Fetching projects for user:", user.id);
+      
+      // Get user data including role and organization_id
+      const { data: userInfo, error: userError } = await supabase
+        .from('users')
+        .select('role, organization_id')
+        .eq('id', user.id)
+        .single();
+
+      if (userError) {
+        console.error('Error fetching user info:', userError);
+        setProjects([]);
+        setLoading(false);
+        return;
+      }
+
+      setUserData(userInfo);
+      setUserRole(userInfo.role);
+      
+      // Fetch organization name if organization_id exists
+      if (userInfo.organization_id) {
+        const { data: orgData, error: orgError } = await supabase
+          .from('organizations')
+          .select('organization_name')
+          .eq('id', userInfo.organization_id)
+          .single();
+        
+        if (orgError) {
+          console.error('Error fetching organization name:', orgError);
+          setOrgName('Unknown Organization');
+        } else {
+          setOrgName(orgData.organization_name || 'Unknown Organization');
+        }
+      } else {
+        setOrgName('No Organization');
+      }
+      
+      let query = supabase.from("projects").select(`
+        id,
+        project_name,
+        location,
+        start_date,
+        end_date,
+        created_at,
+        updated_at
+      `);
+
+      // Apply role-based filtering
+      if (userInfo.role === 'super_admin') {
+        // Super admin: can see all projects (no filtering needed)
+        console.log("Super admin fetching all projects");
+      } else if (userInfo.role === 'org_admin' && userInfo.organization_id) {
+        // Org admin: can see projects from their organization only
+        query = query.eq("organization_id", userInfo.organization_id);
+        console.log("Org admin fetching projects for organization:", userInfo.organization_id);
+      } else if (userInfo.role === 'user' && userInfo.organization_id) {
+        // User: can see projects from their organization only
+        query = query.eq("organization_id", userInfo.organization_id);
+        console.log("User fetching projects for organization:", userInfo.organization_id);
+      } else {
+        // No valid role or organization, return empty
+        console.log("No valid role or organization found");
+        setProjects([]);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await query.order("created_at", { ascending: false });
 
       if (error) {
         console.error("Error fetching projects:", error);
+        setProjects([]);
       } else {
+        console.log("Projects fetched:", data?.length || 0, "projects");
         setProjects(data || []);
       }
     } catch (err) {
       console.error("Exception fetching projects:", err);
+      setProjects([]);
     } finally {
       setLoading(false);
     }
@@ -147,23 +219,35 @@ export default function ProjectsListPage() {
                 Projects
               </h1>
               <p className="text-gray-600 dark:text-gray-400">
-                Manage and track all your construction projects
+                Manage and track all your projects
               </p>
+              {user && (
+                <>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                    User : {user.email}
+                  </p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                    Organization : {orgName}
+                  </p>
+                </>
+              )}
             </div>
             <div className="flex space-x-4">
               <button
-                onClick={() => router.push('/create-project')}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  if (userRole === 'org_admin') {
+                    router.push('/org-dashboard');
+                  } else if (userRole === 'user') {
+                    router.push('/user-dashboard');
+                  } else {
+                    router.push('/super-admin');
+                  }
+                }}
+                className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                Create Project
+                Back to Dashboard
               </button>
-              <button
-                onClick={() => router.push('/activities')}
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                View Activities
-              </button>
-            </div>
+                          </div>
           </div>
 
           {/* Loading State */}
@@ -185,15 +269,9 @@ export default function ProjectsListPage() {
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                       No Projects Yet
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
-                      Get started by creating your first project
+                    <p className="text-gray-600 dark:text-gray-400">
+                      No projects available at the moment
                     </p>
-                    <button
-                      onClick={() => router.push('/create-project')}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
-                    >
-                      Create Your First Project
-                    </button>
                   </div>
                 </div>
               ) : (
@@ -203,8 +281,8 @@ export default function ProjectsListPage() {
                     <div
                       key={project.id}
                       onClick={() => {
-                        // Navigate to project details page
-                        window.location.href = `/project-details?project_id=${project.id}`;
+                        // Navigate within same app window
+                        router.push(`/project-details?project_id=${project.id}`);
                       }}
                       className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer transform hover:scale-105"
                     >
@@ -212,7 +290,7 @@ export default function ProjectsListPage() {
                         {/* Project Header */}
                         <div className="flex justify-between items-start mb-4">
                           <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
-                            {project.name}
+                            {project.project_name}
                           </h3>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
                             {status}
@@ -232,15 +310,7 @@ export default function ProjectsListPage() {
                           </div>
 
                           
-                          <div className="flex items-center text-gray-600 dark:text-gray-400">
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <span className="text-sm truncate">
-                              {project.client_name}
-                            </span>
-                          </div>
-
+                          
                           {/* Dates */}
                           {(project.start_date || project.end_date) && (
                             <div className="flex items-center text-gray-500 dark:text-gray-500 text-xs">

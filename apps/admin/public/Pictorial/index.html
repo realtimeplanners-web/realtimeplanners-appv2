@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Hub - Direct Access</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .access-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .access-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .access-subtitle {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    .access-btn {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .access-btn:hover {
+      transform: translateY(-1px);
+    }
+    .demo-mode {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    .info-message {
+      color: #3b82f6;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="access-container">
+    <h1 class="access-title">Project Hub</h1>
+    <p class="access-subtitle">Direct Access - No Authentication Required</p>
+    <button id="accessBtn" class="access-btn">Enter Project Hub</button>
+    <div class="info-message">
+      Demo Mode - All features available
+    </div>
+  </div>
+
+  <script>
+    // Direct access without authentication
+    document.getElementById('accessBtn').addEventListener('click', () => {
+      // Store demo user info for the application
+      localStorage.setItem('demoUser', JSON.stringify({
+        id: 'demo-user',
+        email: 'demo@example.com',
+        displayName: 'Demo User',
+        lastSignInTime: new Date().toISOString()
+      }));
+      
+      // Redirect to main application
+      window.location.href = 'Pic-project.html';
+    });
+
+    // Auto-redirect after 2 seconds for convenience
+    setTimeout(() => {
+      document.getElementById('accessBtn').click();
+    }, 2000);
+  </script>
+</body>
+</html>

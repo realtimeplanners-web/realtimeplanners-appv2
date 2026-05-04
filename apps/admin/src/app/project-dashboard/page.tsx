@@ -2,16 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Project {
   id: string;
-  name: string;
-  client_name: string;
+  project_name: string;
   location: string;
   start_date: string;
   end_date: string;
   created_at: string;
+  organizations?: {
+    organization_name: string;
+  };
 }
 
 interface Activity {
@@ -49,12 +51,13 @@ interface ActivitySummary {
 }
 
 export default function ProjectDashboardPage() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [activities, setActivities] = useState<ActivityWithProgress[]>([]);
   const [loading, setLoading] = useState(true);
   const [dark, setDark] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
   const [summary, setSummary] = useState<ActivitySummary>({
     total: 0,
     completed: 0,
@@ -77,13 +80,58 @@ export default function ProjectDashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
+  // Check user authentication and fetch user data
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        router.push('/');
+        return;
+      }
+
+      // Get user data including organization_id
+      const { data: userInfo, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (error || !userInfo) {
+        router.push('/');
+        return;
+      }
+
+      setUserData(userInfo);
+    };
+
+    checkAuth();
+  }, [router]);
+
   // Fetch projects
   const fetchProjects = async () => {
+    const isSuperAdmin = userData?.role === "super_admin";
+    if (!isSuperAdmin && !userData?.organization_id) return;
+
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from("projects")
-        .select("*")
+        .select(`
+          id,
+          project_name,
+          location,
+          start_date,
+          end_date,
+          created_at,
+          organizations!projects_organization_id_fkey ( organization_name )
+        `)
         .order("created_at", { ascending: false });
+
+      if (!isSuperAdmin) {
+        query = query.eq("organization_id", userData.organization_id);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error("Error fetching projects:", error);
@@ -252,8 +300,10 @@ export default function ProjectDashboardPage() {
   };
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    if (userData) {
+      fetchProjects();
+    }
+  }, [userData]);
 
   useEffect(() => {
     fetchActivities();
@@ -289,7 +339,7 @@ export default function ProjectDashboardPage() {
               <option value="">Select a project...</option>
               {projects.map((project) => (
                 <option key={project.id} value={project.id}>
-                  {project.name} - {project.client_name}
+                  {project.project_name}
                 </option>
               ))}
             </select>
@@ -302,7 +352,7 @@ export default function ProjectDashboardPage() {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                      {selectedProjectData.name}
+                      {selectedProjectData.project_name}
                     </h2>
                     <div className="flex items-center space-x-4">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${getProjectStatusColor(getProjectStatus())}`}>
@@ -317,8 +367,8 @@ export default function ProjectDashboardPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Client</h3>
-                    <p className="text-gray-900 dark:text-white">{selectedProjectData.client_name}</p>
+                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Organization Name</h3>
+                    <p className="text-gray-900 dark:text-white">{selectedProjectData.organizations?.organization_name || 'N/A'}</p>
                   </div>
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Location</h3>
