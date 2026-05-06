@@ -780,7 +780,7 @@ export default function ActivitiesPage() {
         constraint_status: "",
         task_id: ""
       });
-      setFormErrors({});
+      setErrors({});
       return;
     }
     
