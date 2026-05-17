@@ -953,7 +953,7 @@ export default function ActivitiesPage() {
         .select(`
           id, project_id, zone_id, task_id, activity_name, planned_start, planned_end, duration_days, status, created_at, updated_at, actual_start, actual_end,
           quantity, unit, boq_rate,
-          task:tasks(id, wbs_code, task_name)
+          task:tasks(id, project_id, parent_id, level, wbs_code, task_name)
         `)
         .eq("project_id", selectedProjectId);
 
@@ -988,7 +988,12 @@ export default function ActivitiesPage() {
         ...activity,
         latest_progress: null,
         updated_at: activity.updated_at || new Date().toISOString(),
-        task: activity.task && Array.isArray(activity.task) && activity.task.length > 0 ? activity.task[0] : null
+        task: activity.task && Array.isArray(activity.task) && activity.task.length > 0 ? {
+          ...activity.task[0],
+          project_id: activity.project_id || '',
+          parent_id: null,
+          level: 0
+        } : null
       }));
       
       setActivities(activitiesWithoutProgress);
