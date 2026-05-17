@@ -830,12 +830,12 @@ export default function ActivitiesPage() {
         if (form) {
           const inputs = Array.from(form.querySelectorAll('input, select, button[type="submit"]'));
           const currentIndex = inputs.indexOf(activeElement);
-          
+
           if (currentIndex < inputs.length - 1) {
             e.preventDefault();
             const nextInput = inputs[currentIndex + 1];
             if (nextInput) {
-              nextInput.focus();
+              (nextInput as HTMLElement).focus();
             }
           }
         }
@@ -848,12 +848,12 @@ export default function ActivitiesPage() {
         if (form) {
           const inputs = Array.from(form.querySelectorAll('input, select, button[type="submit"]'));
           const currentIndex = inputs.indexOf(activeElement);
-          
+
           if (currentIndex < inputs.length - 1) {
             e.preventDefault();
             const nextInput = inputs[currentIndex + 1];
             if (nextInput) {
-              nextInput.focus();
+              (nextInput as HTMLElement).focus();
             }
           }
         }
