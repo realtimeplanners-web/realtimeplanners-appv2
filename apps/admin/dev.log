@@ -1,0 +1,1398 @@
+
+> admin@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.142.226.221:3000
+- Environments: .env.local
+✓ Ready in 1317ms
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\USER\Desktop\realtimeplanners\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\USER\Desktop\realtimeplanners\apps\admin\package-lock.json
+
+
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+○ Compiling / ...
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 7.3s (next.js: 5.4s, application-code: 1900ms)
+ GET / 200 in 600ms (next.js: 21ms, application-code: 579ms)
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] @supabase/gotrue-js: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was not released within 5000ms. This may indicate an orphaned lock from a component unmount (e.g., React Strict Mode). Forcefully acquiring the lock to recover.
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at handleLogin (src/app/page.tsx:18:49)
+  16 |     setError("");
+  17 |
+> 18 |     const { data, error } = await supabase.auth.signInWithPassword({
+     |                                                 ^
+  19 |       email,
+  20 |       password,
+  21 |     }); (src/app/page.tsx:18:29)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at handleLogin (src/app/page.tsx:18:49)
+    at handleKeyPress (src/app/page.tsx:90:7)
+  16 |     setError("");
+  17 |
+> 18 |     const { data, error } = await supabase.auth.signInWithPassword({
+     |                                                 ^
+  19 |       email,
+  20 |       password,
+  21 |     }); (src/app/page.tsx:18:29)
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 301ms (next.js: 10ms, application-code: 290ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "10.142.226.221".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['10.142.226.221'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 408ms (next.js: 8ms, application-code: 400ms)
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 398ms (next.js: 80ms, application-code: 318ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 98ms (next.js: 10ms, application-code: 88ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 273ms (next.js: 9ms, application-code: 264ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 145ms (next.js: 6ms, application-code: 138ms)
+ GET / 200 in 135ms (next.js: 8ms, application-code: 126ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 297ms (next.js: 13ms, application-code: 283ms)
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 154ms (next.js: 8ms, application-code: 145ms)
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 177ms (next.js: 9ms, application-code: 168ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+    at handleLogin (src/app/page.tsx:18:49)
+    at handleKeyPress (src/app/page.tsx:90:7)
+  16 |     setError("");
+  17 |
+> 18 |     const { data, error } = await supabase.auth.signInWithPassword({
+     |                                                 ^
+  19 |       email,
+  20 |       password,
+  21 |     }); (src/app/page.tsx:18:29)
+[browser] TypeError: Failed to fetch
+    at handleLogin (src/app/page.tsx:18:49)
+    at handleKeyPress (src/app/page.tsx:90:7)
+  16 |     setError("");
+  17 |
+> 18 |     const { data, error } = await supabase.auth.signInWithPassword({
+     |                                                 ^
+  19 |       email,
+  20 |       password,
+  21 |     }); (src/app/page.tsx:18:29)
+ GET / 200 in 99ms (next.js: 7ms, application-code: 92ms)
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthRetryableFetchError: Failed to fetch
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+ GET / 200 in 161ms (next.js: 7ms, application-code: 153ms)
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+ GET / 200 in 156ms (next.js: 9ms, application-code: 147ms)
+ GET / 200 in 71ms (next.js: 8ms, application-code: 63ms)
+ GET / 200 in 164ms (next.js: 5ms, application-code: 159ms)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+[browser] TypeError: Failed to fetch
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+[browser] AuthApiError: Invalid Refresh Token: Refresh Token Not Found
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+[browser] Error checking user role: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at checkUserRole (src/app/page.tsx:61:17)
+    at async handleLogin (src/app/page.tsx:70:18)
+  59 |
+  60 |       if (error) {
+> 61 |         console.error("Error checking user role:", error);
+     |                 ^
+  62 |         return null;
+  63 |       }
+  64 | (src/app/page.tsx:61:17)
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+[browser] Error checking user role: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at checkUserRole (src/app/page.tsx:61:17)
+    at async handleLogin (src/app/page.tsx:70:18)
+  59 |
+  60 |       if (error) {
+> 61 |         console.error("Error checking user role:", error);
+     |                 ^
+  62 |         return null;
+  63 |       }
+  64 | (src/app/page.tsx:61:17)
+[browser] ⨯ unhandledRejection: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+[browser] 🔍 DEBUG: Error logging failed: {
+  code: [32m''[39m,
+  details: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it\n'[39m +
+    [32m'    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)\n'[39m +
+    [32m'    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)\n'[39m +
+    [32m'    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20'[39m,
+  hint: [32m''[39m,
+  message: [32m'Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it'[39m
+} 
+    at logIssue (src/lib/globalErrorLogger.ts:65:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  63 |       
+  64 |       if (error) {
+> 65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+     |                 ^
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else { (src/lib/globalErrorLogger.ts:65:17)
+[browser] 🔍 DEBUG: Error details: Error: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was released because another request stole it
+    at SupabaseAuthClient.navigatorLock [as lock] (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:2448:23)
+    at async SupabaseAuthClient._acquireLock (http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:5902:20)
+    at async http://localhost:3000/_next/static/chunks/node_modules_%40supabase_auth-js_dist_module_0.pzobh._.js:3729:20 
+    at logIssue (src/lib/globalErrorLogger.ts:66:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  64 |       if (error) {
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+> 66 |         console.error('🔍 DEBUG: Error details:', error.details);
+     |                 ^
+  67 |         console.error('🔍 DEBUG: Error code:', error.code);
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title); (src/lib/globalErrorLogger.ts:66:17)
+[browser] 🔍 DEBUG: Error code:  
+    at logIssue (src/lib/globalErrorLogger.ts:67:17)
+    at async handleUnhandledRejection (src/lib/globalErrorLogger.ts:108:3)
+    at async (src/lib/globalErrorLogger.ts:151:7)
+  65 |         console.error('🔍 DEBUG: Error logging failed:', error);
+  66 |         console.error('🔍 DEBUG: Error details:', error.details);
+> 67 |         console.error('🔍 DEBUG: Error code:', error.code);
+     |                 ^
+  68 |       } else {
+  69 |         console.log('🔍 DEBUG: Error logged successfully:', data.title);
+  70 |         console.log('🔍 DEBUG: Insert result:', result); (src/lib/globalErrorLogger.ts:67:17)
+ GET / 200 in 243ms (next.js: 8ms, application-code: 235ms)
+ GET /org-dashboard 200 in 405ms (next.js: 108ms, application-code: 298ms)
+ GET /planning 200 in 172ms (next.js: 86ms, application-code: 86ms)
+[browser] @supabase/gotrue-js: Lock "lock:sb-pjmkfukkeggeklziyqsz-auth-token" was not released within 5000ms. This may indicate an orphaned lock from a component unmount (e.g., React Strict Mode). Forcefully acquiring the lock to recover.
+[browser] TypeError: Failed to fetch
+    at new Promise (<anonymous>)
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] TypeError: Failed to fetch
+[browser] AuthApiError: Invalid Refresh Token: Refresh Token Not Found
+ GET /planning 200 in 60ms (next.js: 5ms, application-code: 54ms)
+ GET /projects-list 200 in 243ms (next.js: 99ms, application-code: 144ms)
+ GET /project-details?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31 200 in 267ms (next.js: 111ms, application-code: 156ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_id=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_name=Tower+X2 200 in 221ms (next.js: 103ms, application-code: 118ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_id=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_name=Tower+X2 200 in 160ms (next.js: 7ms, application-code: 154ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all&zone_id=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_name=Tower+X2 200 in 175ms (next.js: 68ms, application-code: 106ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all&zone_id=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_name=Tower+X2 200 in 77ms (next.js: 16ms, application-code: 60ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_id=c94b2f20-e875-4a54-9e0b-fa0d04acac66&zone_name=Tower+X2 200 in 91ms (next.js: 18ms, application-code: 73ms)
+ GET /user-dashboard 200 in 525ms (next.js: 203ms, application-code: 322ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31 200 in 106ms (next.js: 5ms, application-code: 101ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all 200 in 87ms (next.js: 25ms, application-code: 62ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all 200 in 59ms (next.js: 10ms, application-code: 49ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all 200 in 53ms (next.js: 6ms, application-code: 47ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31 200 in 129ms (next.js: 8ms, application-code: 121ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all 200 in 111ms (next.js: 13ms, application-code: 98ms)
+ GET /activities?project_id=0989b9c1-65c0-4275-be77-0e4e92a1cb31&zone=all 200 in 130ms (next.js: 19ms, application-code: 111ms)
+ GET / 200 in 240ms (next.js: 9ms, application-code: 230ms)
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+ GET /super-admin 200 in 388ms (next.js: 93ms, application-code: 295ms)
+[browser] An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string. 
+ GET /super-admin?tab=dashboard 200 in 150ms (next.js: 7ms, application-code: 144ms)
+ GET /super-admin?tab=permissions 200 in 65ms (next.js: 6ms, application-code: 59ms)
+⨯ ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  [90m328 |[0m     [36mconst[0m pagesWithImg = pages.filter(p => p.floor_plan_url);
+  [90m329 |[0m     [36mif[0m (!pagesWithImg.length) { alert([32m'No floor plans. Upload an image first.'[0m); [36mreturn[0m; }
+[31m[1m>[0m [90m330 |[0m     [36mconst[0m { jsPDF } = [36mawait[0m [36mimport[0m([32m'jspdf'[0m);
+  [90m    |[0m                             [31m[1m^^^^^^^^^^^^^^^[0m
+  [90m331 |[0m     [36mconst[0m doc = [36mnew[0m jsPDF({ orientation: [32m'landscape'[0m, unit: [32m'mm'[0m, format: [32m'a4'[0m });
+  [90m332 |[0m     [36mconst[0m [33mW[0m = [35m297[0m, [33mH[0m = [35m210[0m, m = [35m10[0m, tH = [35m12[0m;
+  [90m333 |[0m     [36mconst[0m maxW = [33mW[0m - m * [35m2[0m, maxH = [33mH[0m - m - tH - [35m12[0m;
+
+
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ GET /pictorial 500 in 1115ms (next.js: 688ms, application-code: 426ms)
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] Uncaught Error: ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./apps/admin/src/components/PictorialViewer.tsx:330:29)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./apps/admin/src/components/PictorialViewer.tsx:330:29)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+ GET /test-pictorial 500 in 138ms (next.js: 111ms, application-code: 27ms)
+[browser] Uncaught Error: ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./apps/admin/src/components/PictorialViewer.tsx:330:29)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (Error: (./apps/admin/src/components/PictorialViewer.tsx:330:29)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 
+[browser] ./apps/admin/src/components/PictorialViewer.tsx:330:29
+Module not found: Can't resolve 'jspdf'
+  328 |     const pagesWithImg = pages.filter(p => p.floor_plan_url);
+  329 |     if (!pagesWithImg.length) { alert('No floor plans. Upload an image first.'); return; }
+> 330 |     const { jsPDF } = await import('jspdf');
+      |                             ^^^^^^^^^^^^^^^
+  331 |     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  332 |     const W = 297, H = 210, m = 10, tH = 12;
+  333 |     const maxW = W - m * 2, maxH = H - m - tH - 12;
+
+Import traces:
+  Client Component Browser:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component Browser]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./apps/admin/src/components/PictorialViewer.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Client Component SSR]
+    ./apps/admin/src/app/pictorial/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found 

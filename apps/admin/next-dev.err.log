@@ -1,0 +1,284 @@
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\USER\Desktop\realtimeplanners\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\USER\Desktop\realtimeplanners\apps\admin\package-lock.json
+
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error saving progress update: {
+  code: [32m'23503'[39m,
+  details: [32m'Key (created_by)=(f5271155-94ce-458c-b3b3-a6372541c482) is not present in table "profiles".'[39m,
+  hint: [1mnull[22m,
+  message: [32m'insert or update on table "progress_updates" violates foreign key constraint "progress_updates_created_by_fkey"'[39m
+} 
+    at handleProgressSubmit (src/app/activities/page.tsx:1408:17)
+  1406 |
+  1407 |       if (error) {
+> 1408 |         console.error("Error saving progress update:", error);
+       |                 ^
+  1409 |         setError('Failed to submit progress. Please try again.');
+  1410 |         return;
+  1411 |       } (src/app/activities/page.tsx:1408:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at <unknown> (src/app/activities/page.tsx:1237:19)
+  1235 |         },
+  1236 |         (error) => {
+> 1237 |           console.error("Error getting location:", error);
+       |                   ^
+  1238 |           resolve("Location not available");
+  1239 |         }
+  1240 |       ); (src/app/activities/page.tsx:1237:19)
+[browser] Error saving progress update: {
+  code: [32m'23503'[39m,
+  details: [32m'Key (created_by)=(f5271155-94ce-458c-b3b3-a6372541c482) is not present in table "profiles".'[39m,
+  hint: [1mnull[22m,
+  message: [32m'insert or update on table "progress_updates" violates foreign key constraint "progress_updates_created_by_fkey"'[39m
+} 
+    at handleProgressSubmit (src/app/activities/page.tsx:1408:17)
+  1406 |
+  1407 |       if (error) {
+> 1408 |         console.error("Error saving progress update:", error);
+       |                 ^
+  1409 |         setError('Failed to submit progress. Please try again.');
+  1410 |         return;
+  1411 |       } (src/app/activities/page.tsx:1408:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: "all"'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:858:17)
+  856 |
+  857 |       if (activitiesError) {
+> 858 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  859 |         setActivities([]);
+  860 |         return;
+  861 |       } (src/app/activities/page.tsx:858:17)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at <unknown> (src/app/activities/page.tsx:1237:19)
+  1235 |         },
+  1236 |         (error) => {
+> 1237 |           console.error("Error getting location:", error);
+       |                   ^
+  1238 |           resolve("Location not available");
+  1239 |         }
+  1240 |       ); (src/app/activities/page.tsx:1237:19)
+[browser] Error saving progress update: {
+  code: [32m'23503'[39m,
+  details: [32m'Key (created_by)=(f5271155-94ce-458c-b3b3-a6372541c482) is not present in table "profiles".'[39m,
+  hint: [1mnull[22m,
+  message: [32m'insert or update on table "progress_updates" violates foreign key constraint "progress_updates_created_by_fkey"'[39m
+} 
+    at handleProgressSubmit (src/app/activities/page.tsx:1408:17)
+  1406 |
+  1407 |       if (error) {
+> 1408 |         console.error("Error saving progress update:", error);
+       |                 ^
+  1409 |         setError('Failed to submit progress. Please try again.');
+  1410 |         return;
+  1411 |       } (src/app/activities/page.tsx:1408:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: ""'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:862:17)
+  860 |
+  861 |       if (activitiesError) {
+> 862 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  863 |         setActivities([]);
+  864 |         return;
+  865 |       } (src/app/activities/page.tsx:862:17)
+[browser] Error fetching activities: {
+  code: [32m'22P02'[39m,
+  details: [1mnull[22m,
+  hint: [1mnull[22m,
+  message: [32m'invalid input syntax for type uuid: ""'[39m
+} 
+    at fetchActivities (src/app/activities/page.tsx:862:17)
+  860 |
+  861 |       if (activitiesError) {
+> 862 |         console.error("Error fetching activities:", activitiesError);
+      |                 ^
+  863 |         setActivities([]);
+  864 |         return;
+  865 |       } (src/app/activities/page.tsx:862:17)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1294:19)
+  1292 |         },
+  1293 |         (error) => {
+> 1294 |           console.error("Error getting location:", error);
+       |                   ^
+  1295 |           resolve("Location not available");
+  1296 |         }
+  1297 |       ); (src/app/activities/page.tsx:1294:19)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1294:19)
+  1292 |         },
+  1293 |         (error) => {
+> 1294 |           console.error("Error getting location:", error);
+       |                   ^
+  1295 |           resolve("Location not available");
+  1296 |         }
+  1297 |       ); (src/app/activities/page.tsx:1294:19)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1294:19)
+  1292 |         },
+  1293 |         (error) => {
+> 1294 |           console.error("Error getting location:", error);
+       |                   ^
+  1295 |           resolve("Location not available");
+  1296 |         }
+  1297 |       ); (src/app/activities/page.tsx:1294:19)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1266:19)
+  1264 |         },
+  1265 |         (error) => {
+> 1266 |           console.error("Error getting location:", error);
+       |                   ^
+  1267 |           resolve("Location not available");
+  1268 |         }
+  1269 |       ); (src/app/activities/page.tsx:1266:19)
+[browser] Error saving progress update: {
+  code: [32m'23503'[39m,
+  details: [32m'Key (created_by)=(f5271155-94ce-458c-b3b3-a6372541c482) is not present in table "profiles".'[39m,
+  hint: [1mnull[22m,
+  message: [32m'insert or update on table "progress_updates" violates foreign key constraint "progress_updates_created_by_fkey"'[39m
+} 
+    at handleProgressSubmit (src/app/activities/page.tsx:1425:17)
+  1423 |
+  1424 |       if (error) {
+> 1425 |         console.error("Error saving progress update:", error);
+       |                 ^
+  1426 |         setError(`Failed to submit progress: ${error.message || "Please try again."}`);
+  1427 |         return;
+  1428 |       } (src/app/activities/page.tsx:1425:17)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1266:19)
+  1264 |         },
+  1265 |         (error) => {
+> 1266 |           console.error("Error getting location:", error);
+       |                   ^
+  1267 |           resolve("Location not available");
+  1268 |         }
+  1269 |       ); (src/app/activities/page.tsx:1266:19)
+[browser] Error getting location: [object GeolocationPositionError] 
+    at eval (src/app/activities/page.tsx:1266:19)
+  1264 |         },
+  1265 |         (error) => {
+> 1266 |           console.error("Error getting location:", error);
+       |                   ^
+  1267 |           resolve("Location not available");
+  1268 |         }
+  1269 |       ); (src/app/activities/page.tsx:1266:19)
+[browser] Encountered two children with the same key, `Activity 301`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `Activity 301`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `Activity 301`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `Activity 301`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+[browser] Encountered two children with the same key, `Activity 301`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version. 
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+[browser] An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string. 
+An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string.
+[browser] An empty string ("") was passed to the src attribute. This may cause the browser to download the whole page again over the network. To fix this, either do not render the element at all or pass null to src instead of an empty string. 
